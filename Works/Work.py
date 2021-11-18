@@ -38,6 +38,7 @@ from Type.Type import Type
 from Works.WorkComment import WorkComment
 import json
 
+
 class Work:
 
     # 获取单个作品信息
