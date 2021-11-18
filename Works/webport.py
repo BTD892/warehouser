@@ -168,12 +168,12 @@ def on_open(ws):
 
 
 def translate(audiofile, new_path):
-    ffmpeg.input(audiofile).output(new_path, ar=8000, ac=1).run()
+    ffmpeg.input(audiofile).output(new_path, ar=8000, ac=1, f="s16le").run()
     global wsParam
     global result
     result = ""
-    wsParam = Ws_Param(APPID='4e466cce', APISecret='N2Q4NzBlOTg5MTZiMjIyNTMzZTE2MTVm',
-                       APIKey='d682336b77e5399da489a0db64d40ac0',
+    wsParam = Ws_Param(APPID='6f7c07ae', APISecret='Nzk1ZGI2NTg4YjUwZDk1NTk4OTcxOTRk',
+                       APIKey='8eb2f69ae406388a5e16f722c34c7276',
                        AudioFile=new_path)
     websocket.enableTrace(False)
     wsUrl = wsParam.create_url()
@@ -186,10 +186,10 @@ def translate(audiofile, new_path):
 # if __name__ == "__main__":
 #     # 测试时候在此处正确填写相关信息即可运行
 #     time1 = datetime.now()
-#     ffmpeg.input(r'C:\Users\16025\Desktop\port\mintest3.m4a').output(r'C:\Users\16025\Desktop\port\mintest3.pcm', ar=8000, ac=1).run()
-#     wsParam = Ws_Param(APPID='4e466cce', APISecret='N2Q4NzBlOTg5MTZiMjIyNTMzZTE2MTVm',
-#                        APIKey='d682336b77e5399da489a0db64d40ac0',
-#                        AudioFile=r'C:\Users\16025\Desktop\port\mintest3.pcm')
+#     ffmpeg.input(r'C:\Users\16025\Desktop\port\mintest3.m4a').output(r'C:\Users\16025\Desktop\port\mintest8.pcm', ar=8000, ac=1).run()
+#     wsParam = Ws_Param(APPID='6f7c07ae', APISecret='Nzk1ZGI2NTg4YjUwZDk1NTk4OTcxOTRk',
+#                        APIKey='8eb2f69ae406388a5e16f722c34c7276',
+#                        AudioFile=r'C:\Users\16025\Desktop\port\mintest8.pcm')
 #     websocket.enableTrace(False)
 #     wsUrl = wsParam.create_url()
 #     ws = websocket.WebSocketApp(wsUrl, on_message=on_message, on_error=on_error, on_close=on_close)
