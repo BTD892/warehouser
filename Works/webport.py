@@ -167,14 +167,14 @@ def on_open(ws):
     thread.start_new_thread(run, ())
 
 
-def translate(audiofile):
-    # ffmpeg.input(r'C:\Users\16025\Desktop\port\mintest3.m4a').output(r'C:\Users\16025\Desktop\port\mintest3.pcm', ar=8000, ac=1).run()
+def translate(audiofile, new_path):
+    ffmpeg.input(audiofile).output(new_path, ar=8000, ac=1).run()
     global wsParam
     global result
     result = ""
     wsParam = Ws_Param(APPID='4e466cce', APISecret='N2Q4NzBlOTg5MTZiMjIyNTMzZTE2MTVm',
                        APIKey='d682336b77e5399da489a0db64d40ac0',
-                       AudioFile=audiofile)
+                       AudioFile=new_path)
     websocket.enableTrace(False)
     wsUrl = wsParam.create_url()
     ws = websocket.WebSocketApp(wsUrl, on_message=on_message, on_error=on_error, on_close=on_close)
