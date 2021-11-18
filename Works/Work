@@ -33,8 +33,8 @@
 # Work.getUserWork(workId)
 
 import pymysql
-import Type
-import WorkComment
+from Type.Type import Type
+from Works.WorkComment import WorkComment
 import json
 
 class Work:
@@ -66,6 +66,7 @@ class Work:
             result["userId"] = results[4]
             jsonData.append(result)
             print(jsonData)
+            return jsonData
         except:
             print("Error: unable to get workInfo")
 
@@ -119,7 +120,8 @@ class Work:
             conn.close()
             results = Work.getWorkInfo()
             return results
-        except:
+        except Exception as e:
+            print(e)
             print("Error: unable to insert work")
 
     # 更改作品名称
