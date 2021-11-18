@@ -1,3 +1,4 @@
+# coding=utf-8
 from Works.webport import translate
 import random
 from Works.Work import Work
