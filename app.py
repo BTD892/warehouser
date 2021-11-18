@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask import Flask, redirect, request, jsonify
 from Works.works_method import WorksMethod, AudioWorkMethod, ArticleWorkMethod
 from Users.users_method import UserMethod
