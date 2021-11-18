@@ -33,7 +33,7 @@ class WorksMethod:
         # 搜索作品
 
     # 插入作品
-    def publish_public_work(workName, workContent, userId="", workType = ""):
+    def publish_public_work(workName, workContent, userId, workType = ""):
         results = Work.insertWork(workName, workContent, userId, workType)
         print(results)
         result = results[len(results)-1]
