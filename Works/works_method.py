@@ -1,4 +1,4 @@
-# coding=utf-8
+# coding = utf-8
 from Works.webport import translate
 import random
 from Works.Work import Work
@@ -34,8 +34,8 @@ class WorksMethod:
         # 搜索作品
 
     # 插入作品
-    def publish_public_work(workName, workContent, userId, workType = ""):
-        results = Work.insertWork(workName, workContent, userId, workType)
+    def publish_public_work(workName, workContent, userId, fileType, workType = ""):
+        results = Work.insertWork(workName, workContent, userId, fileType, workType)
         print(results)
         result = results[len(results)-1]
         return result['workId']
