@@ -21,6 +21,7 @@
 import pymysql
 import json
 
+
 class WorkComment:
 
     # 获取作品评分表
@@ -47,7 +48,7 @@ class WorkComment:
                 result['workScore'] = row[1]
                 jsonData.append(result)
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
         else:
             jsondatar = json.dumps(jsonData, ensure_ascii=False)
             return jsondatar[1:len(jsondatar) - 1]
@@ -74,6 +75,9 @@ class WorkComment:
             return workScore
         except:
             print("Error: unable to fetchall userPrefer")
+        else:
+            jsondatar = json.dumps(jsonData, ensure_ascii=False)
+            return jsondatar[1:len(jsondatar) - 1]
 
     # 添加作品评分
     def insertWorkComment(workId,workScore):
@@ -96,7 +100,7 @@ class WorkComment:
             return results
         except Exception as e:
             print(e)
-            print("Error: unable to insert workComment")
+            return False
 
     # 删除作品评分
     def deleteWorkComment(workId):
@@ -115,10 +119,10 @@ class WorkComment:
             conn.commit()
             cursor.close()
             conn.close()
-            results = WorkComment.getWorkComment()
+            results = WorkComment.getWorkComment(workId)
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
 
     # 修改作品评分
     def updateWorkComment(workId,workScore):
@@ -137,11 +141,7 @@ class WorkComment:
             conn.commit()
             cursor.close()
             conn.close()
-            results = WorkComment.getWorkComment()
+            results = WorkComment.getSingleWorkComment(workId)
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
-
-if __name__ == "__main__":
-    # WorkComment.getSingleWorkComment("15")
-    print(WorkComment.insertWorkComment("10001", "20"))
+            return False
