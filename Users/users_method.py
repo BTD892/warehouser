@@ -16,21 +16,45 @@
 # 用户浏览作品后添加至历史记录
 # UserMethod.view_work(userId, workId)
 from Users.user import User
+from Works.Work import Work
+import json
 
 
 class UserMethod:
 
-    def register(userId, phoneNumber, userName, profilePicture, userMarks='', userWorks='', userSearchRecord='', userPrefer=''):
+    def register(phoneNumber, userName, profilePicture = ''):
         # 插入用户信息
-        user = User.insertUserInfo(userId,phoneNumber,userName,profilePicture = '',userMarks = '',
-        userWorks = '',userSearchRecord = '',userPrefer='')
+        user = User.insertUserInfo(userName, phoneNumber)
         return user
         # 注册用户
+
+    def update_icon(userId, newProfilePicture):
+        User.updateprofilePicture(userId, newProfilePicture)
+
+    def update_username(phone, new_username):
+        result = User.updateUserName(phone, new_username)
+        return result
+
+    def update_country(phone, new_country):
+        pass
+
+    def update_province():
+        pass
+
+    def update_city():
+        pass
+
+    def update_gender():
+        pass
+
+    def update_language():
+        pass
 
     def view_work(userId, workId):
         # 添加用户历史浏览记录
         new_history = User.insertuserSearchRecord(userId, workId)
         # 仍需获取work信息
+        print(type(new_history))
         return new_history
         # 浏览作品
 
@@ -40,13 +64,31 @@ class UserMethod:
 
     def view_history(userId):
         # 获取用户历史浏览记录
-        now_history = User.getUserSearchRecord(userId)
+        result = User.getUserSearchRecord(userId)
+        print(result)
+        now_history = list()
+        for work in result:
+            uid = work[0].get("userId")
+            print(uid)
+            user = User.getSingleUserInfo(str(uid))
+            username = user[0].get("userName")
+            work[0]["username"] = username
+            now_history.append(work)
         return now_history
         # 查看历史
 
     def view_mark(UserId):
         # 获取用户收藏信息
-        now_marks = User.getuserMarks(UserId)
+        result = User.getuserMarks(UserId)
+        now_marks = list()
+        for workid in result:
+            work = Work.getSingleWorkInfo(workid)
+            uid = work[0].get("userId")
+            user = User.getSingleUserInfo(str(uid))
+            username = user[0].get("userName")
+            print(type(user))
+            work[0]["username"] = username
+            now_marks.append(work)
         return now_marks
         # 查看收藏
 
