@@ -34,7 +34,7 @@
 # Work.getUserWork(workId)
 
 import pymysql
-from Type.Type import Type
+import Type
 from Works.WorkComment import WorkComment
 import json
 
@@ -64,13 +64,16 @@ class Work:
             result["workId"] = results[0]
             result["workName"] = results[1]
             result["workContent"] = results[2]
-            result["workType"] = results[3]
+            result["workType"] = Work.getWorkTypeName(workId)
             result["userId"] = results[4]
+            result["fileType"] = results[5]
             jsonData.append(result)
-            print(jsonData)
             return jsonData
         except:
-            print("Error: unable to get workInfo")
+            return False
+        else:
+            jsondatar = json.dumps(jsonData, ensure_ascii=False)
+            return jsondatar[1:len(jsondatar) - 1]
 
     # 获取全部作品
     def getWorkInfo():
@@ -97,13 +100,18 @@ class Work:
                 result["workContent"] = row[2]
                 result["workType"] = row[3]
                 result["userId"] = row[4]
+                result["fileType"] = row[5]
                 jsonData.append(result)
+            print(jsonData)
             return jsonData
         except:
-            print("Error: unable to get workInfo")
+            return False
+        else:
+            jsondatar = json.dumps(jsonData, ensure_ascii=False)
+            return jsondatar[1:len(jsondatar) - 1]
 
     # 添加作品信息
-    def insertWork(workName,workContent,userId,workType = ""):
+    def insertWork(workName,workContent,userId,fileType,workType = ""):
         conn = pymysql.connect(
             host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
             user="root",
@@ -113,8 +121,8 @@ class Work:
 
         # 创建游标
         cursor = conn.cursor();
-        sql = "INSERT INTO Work(workName,workContent,userId,workType) VALUES('%s','%s','%s','%s');"% \
-        (workName,workContent,userId,workType);
+        sql = "INSERT INTO Work(workName,workContent,userId,workType,fileType) VALUES('%s','%s','%s','%s','%s');"% \
+        (workName,workContent,userId,workType,fileType);
         try:
             cursor.execute(sql)
             conn.commit()
@@ -124,7 +132,7 @@ class Work:
             return results
         except Exception as e:
             print(e)
-            print("Error: unable to insert work")
+            return False
 
     # 更改作品名称
     def updateWorkName(workId,newWorkName):
@@ -143,10 +151,10 @@ class Work:
             conn.commit()
             cursor.close()
             conn.close()
-            results = Work.getWorkInfo()
+            results = Work.getSingleWorkInfo(workId)
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
 
     # 更改作品内容
     def updateWorkContent(workId,newWorkContent):
@@ -165,10 +173,10 @@ class Work:
             conn.commit()
             cursor.close()
             conn.close()
-            results = Work.getWorkInfo()
+            results = Work.getSingleWorkInfo(workId)
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
 
     # 更改作品分类
     def updateWorkType(workId,newWorkType):
@@ -187,10 +195,10 @@ class Work:
             conn.commit()
             cursor.close()
             conn.close()
-            results = Work.getWorkInfo()
+            results = Work.getSingleWorkInfo(workId)
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
 
     # 删除作品
     def deleteWork(workId):
@@ -212,7 +220,7 @@ class Work:
             results = Work.getWorkInfo()
             return results
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
 
     # 获取用户的作品
     def getUserWork(userId):
@@ -242,10 +250,78 @@ class Work:
                 jsonData.append(result)
             return jsonData
         except:
-            print("Error: unable to fetchall userPrefer")
+            return False
+
+    # 获取作品名
+    def getWorkName(workId):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT workName FROM Work WHERE workId = \""+workId+"\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            results = results[0]
+            results = results[0]
+            return results
+        except:
+            return False
+
+    # 获取作品内容
+    def getWorkContent(workId):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT workContent FROM Work WHERE workId = \"" + workId + "\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            results = results[0]
+            results = results[0]
+            return results
+        except:
+            return False
+
+    # 获取作品类名
+    def getWorkTypeName(workId):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT workType FROM Work WHERE workId = \"" + workId + "\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            typeId = results[0]
+            typeId = typeId[0]
+            typeName = Type.Type.getTypeName(typeId)
+            return typeName
+        except:
+            return False
 
 
 if __name__ == "__main__":
-    Work.getSingleWorkInfo("10004")
-    # results = Work.insertWork("666", "1234567890", "12", workType="")
-    # print(results[len(results)-1]['workId'])
+    Work.insertWork("test1", "abcdefghijklmn", "2", "1")
