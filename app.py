@@ -32,7 +32,6 @@ def setInfoByUserId():
     language = getData.get("language")
     if nickName:
         UserMethod.update_username(phone, nickName)
-        print("?")
     if country:
         ingore = 1
     if province:
@@ -43,7 +42,6 @@ def setInfoByUserId():
         ingore = 1
     if language:
         ingore = 1
-
 
     return jsonify(msg="User Info put in !")
 
@@ -88,7 +86,6 @@ def getRandomWork():
 def getUserHistory():
     getData = request.get_json()
     id = getData.get("id")
-    print(id)
     userData = UserMethod.view_history(str(id))
     return jsonify(randomWork=userData)
 
@@ -140,7 +137,12 @@ def upload4Score():
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
     thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
-    thisAudioId2Score = WorksMethod.make_comment(str(thisAudioId))
+    text = AudioWorkMethod.translate_work(filePath)
+    score = WorksMethod.make_comment(str(thisAudioId), text)
+    if score <= 500:
+        thisAudioId2Score = "SSS"
+    elif 500 < score <= 1000:
+        thisAudioId2Score = "SS"
     data = {
         'id': thisAudioId,
         'score': thisAudioId2Score
