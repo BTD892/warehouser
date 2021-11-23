@@ -68,11 +68,12 @@ class UserMethod:
         print(result)
         now_history = list()
         for work in result:
-            uid = work[0].get("userId")
+            uid = work.get("userId")
             print(uid)
             user = User.getSingleUserInfo(str(uid))
+            print(user)
             username = user[0].get("userName")
-            work[0]["username"] = username
+            work["username"] = username
             now_history.append(work)
         return now_history
         # 查看历史
@@ -80,14 +81,15 @@ class UserMethod:
     def view_mark(UserId):
         # 获取用户收藏信息
         result = User.getuserMarks(UserId)
+        print(result)
         now_marks = list()
-        for workid in result:
-            work = Work.getSingleWorkInfo(workid)
-            uid = work[0].get("userId")
+        for work in result:
+            uid = work.get("userId")
+            print(uid)
             user = User.getSingleUserInfo(str(uid))
+            print(user)
             username = user[0].get("userName")
-            print(type(user))
-            work[0]["username"] = username
+            work["username"] = username
             now_marks.append(work)
         return now_marks
         # 查看收藏
