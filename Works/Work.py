@@ -102,7 +102,6 @@ class Work:
                 result["userId"] = row[4]
                 result["fileType"] = row[5]
                 jsonData.append(result)
-            print(jsonData)
             return jsonData
         except:
             return False
