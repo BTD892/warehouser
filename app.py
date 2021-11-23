@@ -3,6 +3,7 @@ from flask import Flask, redirect, request, jsonify, session, send_from_director
 from Works.works_method import WorksMethod, AudioWorkMethod, ArticleWorkMethod
 from Users.users_method import UserMethod
 import os
+import time
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
@@ -87,16 +88,15 @@ def getUserHistory():
     getData = request.get_json()
     id = getData.get("id")
     userData = UserMethod.view_history(str(id))
-    return jsonify(randomWork=userData)
+    return jsonify(history=userData)
 
 
 @app.route('/alwaysRight/getUserLikeById', methods=["POST"])
 def getUserLikeById():
     getData = request.get_json()
-    print(getData)
     id = getData.get("id")
     userData = UserMethod.view_mark(id)
-    return jsonify(randomWork=userData)
+    return jsonify(Mark=userData)
 
 
 # @app.route('/alwaysRight/changeUserIcon')
@@ -127,7 +127,7 @@ def upload4Score():
     audio = request.files.get('audio')
     path = ".\\static\\audio\\"
     audioName = audio.filename
-    filePath = path + audioName
+    filePath = path + str(time.time()) + audioName
     userId = "2"
     print(type(userId))
     # 插入时必须有用户id
@@ -143,6 +143,12 @@ def upload4Score():
         thisAudioId2Score = "SSS"
     elif 500 < score <= 1000:
         thisAudioId2Score = "SS"
+    elif 1000 < score <= 3000:
+        thisAudioId2Score = "S"
+    elif 3000 < score <= 10000:
+        thisAudioId2Score = "A"
+    else:
+        thisAudioId2Score = "B"
     data = {
         'id': thisAudioId,
         'score': thisAudioId2Score
@@ -155,7 +161,7 @@ def upload4text():
     audio = request.files.get('audio')
     path = ".\\static\\audio\\"
     audioName = audio.filename
-    filePath = path + audioName
+    filePath = path + str(time.time()) + audioName
     userId = "2"
     fileType = "0"
     # 插入时必须得有用户Id
