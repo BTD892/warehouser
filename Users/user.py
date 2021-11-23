@@ -1,4 +1,4 @@
-# coding=utf-8
+# coding =  utf-8
 # 使用样例
 
 # 查找单个用户的信息
@@ -65,9 +65,8 @@
 import pymysql
 import json
 
-import Type
+from Type.Type import Type
 from Works.Work import Work
-
 
 class User:
 
@@ -99,7 +98,7 @@ class User:
             result['userName'] = results[2]
             result['profileName'] = results[3]
             result['userMarks'] = User.getuserMarks(userId)
-            result['userWorks'] = Work.Work.getUserWork(userId)
+            result['userWorks'] = Work.getUserWork(userId)
             result['userSearchRecord'] = User.getUserSearchRecord(userId)
             result['userPrefer'] = User.getuserPrefer(userId)
             print
@@ -165,7 +164,7 @@ class User:
         # 创建游标
         cursor = conn.cursor();
 
-        sql = "INSERT INTO User(userName,phoneNumber,profilePicture,userMarks,userWorks,userSearchRecord,userPrefer) \
+        sql =  "INSERT INTO User(userName,phoneNumber,profilePicture,userMarks,userWorks,userSearchRecord,userPrefer) \
         VALUES('%s','%s','%s','%s','%s','%s','%s')"% \
         (userName,phoneNumber,profilePicture,userMarks,userWorks,userSearchRecord,userPrefer);
         try:
@@ -224,7 +223,6 @@ class User:
             cursor.close()
             conn.close()
             results = User.getSingleUserInfo(userId)
-            print(results)
             return results
         except:
             print("Error: unable to update userName")
@@ -282,9 +280,10 @@ class User:
             for i in userMarks:
                 singleWork = {}
                 singleWork["workId"] = i
-                singleWork["workName"] = Work.Work.getWorkName(i)
-                singleWork["workContent"] = Work.Work.getWorkContent(i)
-                singleWork["workType"] = Work.Work.getWorkTypeName(i)
+                singleWork["workName"] = Work.getWorkName(i)
+                singleWork["workContent"] = Work.getWorkContent(i)
+                singleWork["workType"] = Work.getWorkTypeName(i)
+                singleWork["userId"] = Work.getWorkAuthor(i)
                 jsonData.append(singleWork)
             return jsonData
         except:
@@ -405,11 +404,10 @@ class User:
                 singleWork["workName"] = Work.getWorkName(i)
                 singleWork["workContent"] = Work.getWorkContent(i)
                 singleWork["workType"] = Work.getWorkTypeName(i)
-                singleWork["userId"] = Work.getWorkUserId(i)
+                singleWork["userId"] = Work.getWorkAuthor(i)
                 jsonData.append(singleWork)
             return jsonData
-        except Exception as e:
-            print(e)
+        except:
             return False
         else:
             jsondatar = json.dumps(jsonData, ensure_ascii=False)
