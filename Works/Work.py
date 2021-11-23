@@ -1,4 +1,4 @@
-# coding=utf-8
+# coding = utf-8
 # 调用实例
 
 # 添加作品信息
@@ -34,7 +34,7 @@
 # Work.getUserWork(workId)
 
 import pymysql
-import Type
+from Type.Type import Type
 from Works.WorkComment import WorkComment
 import json
 
@@ -121,8 +121,8 @@ class Work:
 
         # 创建游标
         cursor = conn.cursor();
-        sql = "INSERT INTO Work(workName,workContent,userId,workType,fileType) VALUES('%s','%s','%s','%s','%s');"% \
-        (workName,workContent,userId,workType,fileType);
+        sql = "INSERT INTO Work(workName,workContent,userId,fileType,workType) VALUES('%s','%s','%s','%s','%s');"% \
+        (workName,workContent,userId,fileType,workType);
         try:
             cursor.execute(sql)
             conn.commit()
@@ -130,8 +130,7 @@ class Work:
             conn.close()
             results = Work.getWorkInfo()
             return results
-        except Exception as e:
-            print(e)
+        except:
             return False
 
     # 更改作品名称
@@ -297,7 +296,28 @@ class Work:
             return results
         except:
             return False
+    # 获取作品作者id
+    def getWorkAuthor(workId):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
 
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT userId FROM Work WHERE workId = \"" + workId + "\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            results = results[0]
+            results = results[0]
+            return results
+        except:
+            return False
     # 获取作品类名
     def getWorkTypeName(workId):
         conn = pymysql.connect(
@@ -322,6 +342,5 @@ class Work:
         except:
             return False
 
-
 if __name__ == "__main__":
-    Work.insertWork("test1", "abcdefghijklmn", "2", "1")
+    Work.getWorkInfo()
