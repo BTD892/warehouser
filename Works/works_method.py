@@ -3,6 +3,7 @@ from Works.webport import translate
 import random
 from Works.Work import Work
 from Works.WorkComment import WorkComment
+from Works.makescore import get_score
 
 
 class WorksMethod:
@@ -20,12 +21,12 @@ class WorksMethod:
 
         # 获取推送文
 
-    def make_comment(workid):
+    def make_comment(workid, text):
         # 获取随机数
-        score = random.randint(1, 100)
+        score = get_score(text)
         # 将分数和id存入表中
         result = WorkComment.insertWorkComment(workid, str(score))
-        return result
+        return score
         # 给对应作品评分，并存入数据库中
 
     def search_work(workid):
