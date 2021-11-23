@@ -1,4 +1,4 @@
-# coding=utf-8
+# coding = utf-8
 # 作品评分
 
 # 调用实例
@@ -96,10 +96,9 @@ class WorkComment:
             conn.commit()
             cursor.close()
             conn.close()
-            results = WorkComment.getWorkComment()
+            results = WorkComment.getWorkComment(workId)
             return results
-        except Exception as e:
-            print(e)
+        except:
             return False
 
     # 删除作品评分
