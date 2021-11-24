@@ -296,6 +296,7 @@ class Work:
         except:
             return False
     # 获取作品作者id
+
     def getWorkAuthor(workId):
         conn = pymysql.connect(
             host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
@@ -340,6 +341,51 @@ class Work:
             return typeName
         except:
             return False
+
+    def getTextcnt():
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+        cursor = conn.cursor()
+        sql = "select COUNT(distinct workId) from Work where filetype = 1"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            a = results[0]
+            b = a[0]
+            cursor.close()
+            conn.close()
+            return b
+        except Exception as e:
+            print(e)
+            return False
+
+    def getAudiocnt():
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+        cursor = conn.cursor()
+        sql = "select COUNT(distinct workId) from Work where filetype = 0"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            a = results[0]
+            b = a[0]
+            cursor.close()
+            conn.close()
+            return b
+        except Exception as e:
+            print(e)
+            return False
+
+
+
 
 if __name__ == "__main__":
     Work.getWorkInfo()
