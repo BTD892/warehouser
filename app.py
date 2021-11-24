@@ -4,6 +4,8 @@ from Works.works_method import WorksMethod, AudioWorkMethod, ArticleWorkMethod
 from Users.users_method import UserMethod
 import os
 import time
+import wave
+import contextlib
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
@@ -14,9 +16,9 @@ def register():
     getData = request.get_json()
     phone = getData.get('phone')
     username = getData.get('username')
+    print(phone + "want to register")
     session['phone']=phone
     result = UserMethod.register(phone, username)
-    print(result)
     return jsonify(msg="user Phone Put in !")
 
 
@@ -51,6 +53,7 @@ def setInfoByUserId():
 def login():
     getData = request.get_json()
     phone = getData.get("phone")
+    print("Someone wanna login!!!")
     session['phone'] = phone
     return jsonify(msg="session login ! ")
 
@@ -58,6 +61,7 @@ def login():
 @app.route('/alwaysRight/logOut', methods=["POST"])
 def logOut():
     session.clear()
+    print("Someone wanna logout!!!")
     return jsonify(msg="session erase ! ")
 
 
@@ -65,6 +69,7 @@ def logOut():
 def checkLogin():
     message = 1
     phone = session['phone']
+    print("Let's check login")
     if not phone:
         message = 0
 
@@ -75,6 +80,7 @@ def checkLogin():
 def getRandomWork():
     getWork = WorksMethod.get_random_work() # get random TotalWork
     # getWork = WorkMethod.get_random_work()
+    print("Fetch Some Work!!!")
     return jsonify(randomWork=getWork)
 
 
@@ -86,16 +92,18 @@ def getRandomWork():
 @app.route('/alwaysRight/getUserHistory', methods=["POST"])
 def getUserHistory():
     getData = request.get_json()
-    id = getData.get("id")
+    id = getData.get("phone")
     userData = UserMethod.view_history(str(id))
+    print("Someone get History")
     return jsonify(history=userData)
 
 
 @app.route('/alwaysRight/getUserLikeById', methods=["POST"])
 def getUserLikeById():
     getData = request.get_json()
-    id = getData.get("id")
+    id = getData.get("phone")
     userData = UserMethod.view_mark(id)
+    print("Someone get Mark")
     return jsonify(Mark=userData)
 
 
@@ -124,21 +132,22 @@ def getSomethingByUrl():
 
 @app.route('/alwaysRight/uploadAudio4Score', methods=["POST"])
 def upload4Score():
+    print("Someone get Score")
     audio = request.files.get('audio')
     path = ".\\static\\audio\\"
     audioName = audio.filename
     filePath = path + str(time.time()) + audioName
-    userId = "2"
-    print(type(userId))
-    # 插入时必须有用户id
     audio.save(filePath)
-    print(audioName)
-    fileType = "0"
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
-    thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
+    # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
+    fname = '.\\static\\Audio\\mintest3.wav'
+    with contextlib.closing(wave.open(fname, 'r')) as f:
+        framse = f.getnframes()
+        rate = f.getframerate()
+        duration = framse / float(rate)
     text = AudioWorkMethod.translate_work(filePath)
-    score = WorksMethod.make_comment(str(thisAudioId), text)
+    score = WorksMethod.make_comment(text)*0.5 + duration*10 + len(text)*10
     if score <= 500:
         thisAudioId2Score = "SSS"
     elif 500 < score <= 1000:
@@ -150,7 +159,6 @@ def upload4Score():
     else:
         thisAudioId2Score = "B"
     data = {
-        'id': thisAudioId,
         'score': thisAudioId2Score
     }
     return jsonify(data)
@@ -158,6 +166,7 @@ def upload4Score():
 
 @app.route('/alwaysRight/uploadAudio4text', methods=["POST"])
 def upload4text():
+    print("Someone get Text")
     audio = request.files.get('audio')
     path = ".\\static\\audio\\"
     audioName = audio.filename
@@ -167,26 +176,13 @@ def upload4text():
     # 插入时必须得有用户Id
     print(filePath)
     audio.save(filePath)
-    thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)  # save id
+    # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)  # save id
     thisAudioId2Text = AudioWorkMethod.translate_work(filePath)  # save score
     # WorkMethod.make_score(id)
     data = {
-        'id': thisAudioId,
         'text': thisAudioId2Text
     }
     return jsonify(data)
-
-
-# def func():
-#     return 1
-#
-#
-# @app.route('/alwaysRight/dialect2Mandarin', methods=["POST"])
-# def trans():
-#     audio = request.files.get('audio')
-#     res = func(audio)
-#
-#     return jsonify(data=res)
 
 
 if __name__ == '__main__':
