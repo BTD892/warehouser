@@ -5,6 +5,9 @@
 # JSON OK
 # User.getSingleUserInfo(userId)
 
+# 转换phoneNumber
+# User.translateToUserId(phoneNumber)
+
 # 查找全部用户信息
 # JSON OK
 # User.getUserInfo()
@@ -94,8 +97,8 @@ class User:
             jsonData = []
             result = {}
             result['userId'] = results[0]
-            result['phoneNumber'] = results[1]
-            result['userName'] = results[2]
+            result['userName'] = results[1]
+            result['phoneNumber'] = results[2]
             result['profileName'] = results[3]
             result['userMarks'] = User.getuserMarks(userId)
             result['userWorks'] = Work.getUserWork(userId)
@@ -176,7 +179,8 @@ class User:
             conn.close()
             results = User.getUserInfo()
             return results
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     # 更换用户头像
@@ -215,6 +219,121 @@ class User:
         # 创建游标
         cursor = conn.cursor();
         sql = "UPDATE User SET userName = \""+newUserName+"\""+"WHERE userId = \"" + userId + "\";";
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 执行sql语句
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getSingleUserInfo(userId)
+            return results
+        except:
+            print("Error: unable to update userName")
+
+    def updateUserCountry(userId,newConutry):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "UPDATE User SET Country = \"" + newConutry + "\"" + "WHERE userId = \"" + userId + "\";";
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 执行sql语句
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getSingleUserInfo(userId)
+            return results
+        except:
+            print("Error: unable to update userName")
+
+    def updateUserProvince(userId, newCity):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "UPDATE User SET Province = \"" + newCity + "\"" + "WHERE userId = \"" + userId + "\";";
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 执行sql语句
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getSingleUserInfo(userId)
+            return results
+        except:
+            print("Error: unable to update userName")
+
+    def updateUserCity(userId,newConutry):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "UPDATE User SET City = \"" + newConutry + "\"" + "WHERE userId = \"" + userId + "\";";
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 执行sql语句
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getSingleUserInfo(userId)
+            return results
+        except:
+            print("Error: unable to update userName")
+
+    def updateUserGender(userId,newGender):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "UPDATE User SET Gender = \"" + newGender + "\"" + "WHERE userId = \"" + userId + "\";";
+        try:
+            # 执行sql语句
+            cursor.execute(sql)
+            # 执行sql语句
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getSingleUserInfo(userId)
+            return results
+        except:
+            print("Error: unable to update userName")
+
+    def updateUserLanguage(userId,newLanguage):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "UPDATE User SET Language = \"" + newLanguage + "\"" + "WHERE userId = \"" + userId + "\";";
         try:
             # 执行sql语句
             cursor.execute(sql)
@@ -322,11 +441,8 @@ class User:
     # 添加用户收藏记录
     def insertuserMarks(userId,workId):
         userMarks = User.getuserMarks_1(userId)
-        print(userMarks)
         userMarks.append(workId)
-        print(userMarks)
         str1 = ",".join(userMarks)
-        print(str1)
         conn = pymysql.connect(
             host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
             user="root",
@@ -407,7 +523,8 @@ class User:
                 singleWork["userId"] = Work.getWorkAuthor(i)
                 jsonData.append(singleWork)
             return jsonData
-        except:
+        except Exception as e:
+            print(e)
             return False
         else:
             jsondatar = json.dumps(jsonData, ensure_ascii=False)
@@ -621,6 +738,51 @@ class User:
             cursor.close()
             conn.close()
             results = User.getUserInfo()
+            return results
+        except:
+            return False
+
+    # 转换phoneNumber为userId
+    def translateToUserId(phoneNumber):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT userId FROM User WHERE phoneNumber = \""+phoneNumber+"\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            results = results[0]
+            results = results[0]
+            return results
+        except:
+            return False
+
+    def getUsername(userid):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        cursor = conn.cursor();
+        sql = "SELECT username FROM User WHERE phoneNumber = \"" + userid + "\";"
+        try:
+            cursor.execute(sql)
+            results = cursor.fetchall()
+            cursor.close()
+            conn.close()
+            results = results[0]
+            results = results[0]
             return results
         except:
             return False
