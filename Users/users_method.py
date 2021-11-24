@@ -28,35 +28,62 @@ class UserMethod:
         return user
         # 注册用户
 
-    def update_icon(userId, newProfilePicture):
-        User.updateprofilePicture(userId, newProfilePicture)
+    def phone2userid(phone):
+        userid = User.translateToUserId(phone)
+        return userid
+
+    def update_icon(phone, newProfilePicture):
+        userId = User.translateToUserId(phone)
+        result = User.updateprofilePicture(str(userId), newProfilePicture)
+        return result
 
     def update_username(phone, new_username):
-        result = User.updateUserName(phone, new_username)
+        userId = User.translateToUserId(phone)
+        result = User.updateUserName(str(userId), new_username)
         return result
 
     def update_country(phone, new_country):
-        pass
+        userId = User.translateToUserId(phone)
+        result = User.updateUserCountry(str(userId), new_country)
+        return result
 
-    def update_province():
-        pass
+    def update_province(phone, new_province):
+        userId = User.translateToUserId(phone)
+        result = User.updateUserProvince(str(userId), new_province)
+        return result
 
-    def update_city():
-        pass
+    def update_city(phone, new_city):
+        userId = User.translateToUserId(phone)
+        result = User.updateUserCity(str(userId), new_city)
+        return result
 
-    def update_gender():
-        pass
+    def update_gender(phone, new_gender):
+        userId = User.translateToUserId(phone)
+        result = User.updateUserGender(str(userId), new_gender)
+        return result
 
-    def update_language():
-        pass
+    def update_language(phone, new_language):
+        userId = User.translateToUserId(phone)
+        result = User.updateUserLanguage(str(userId), new_language)
+        return result
 
-    def view_work(userId, workId):
+    def view_work(phone, workId):
         # 添加用户历史浏览记录
-        new_history = User.insertuserSearchRecord(userId, workId)
+        userId = User.translateToUserId(phone)
+        new_history = User.insertuserSearchRecord(str(userId), str(workId))
         # 仍需获取work信息
-        print(type(new_history))
         return new_history
         # 浏览作品
+
+    def add_marks(phone, workid):
+        userId = User.translateToUserId(phone)
+        result = User.insertuserMarks(str(userId), str(workid))
+        return result
+
+    def delete_marks(phone, workid):
+        userId = User.translateToUserId(phone)
+        result = User.deleteuserMarks(str(userId), str(workid))
+        return result
 
     def publish_work():
         pass
@@ -68,31 +95,26 @@ class UserMethod:
         now_history = list()
         if result is None:
             return now_history
-
         for work in result:
             uid = work.get("userId")
-            print(uid)
             user = User.getSingleUserInfo(str(uid))
-            print(user)
             username = user[0].get("userName")
-            work["username"] = username
+            work["author"] = username
             now_history.append(work)
         return now_history
         # 查看历史
 
-    def view_mark(UserId):
+    def view_mark(userId):
         # 获取用户收藏信息
-        result = User.getuserMarks(UserId)
+        result = User.getUserSearchRecord(userId)
         now_marks = list()
         if result is None:
             return now_marks
         for work in result:
             uid = work.get("userId")
-            print(uid)
             user = User.getSingleUserInfo(str(uid))
-            print(user)
             username = user[0].get("userName")
-            work["username"] = username
+            work["author"] = username
             now_marks.append(work)
         return now_marks
         # 查看收藏
