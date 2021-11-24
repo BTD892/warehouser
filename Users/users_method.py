@@ -65,8 +65,10 @@ class UserMethod:
     def view_history(userId):
         # 获取用户历史浏览记录
         result = User.getUserSearchRecord(userId)
-        print(result)
         now_history = list()
+        if result is None:
+            return now_history
+
         for work in result:
             uid = work.get("userId")
             print(uid)
@@ -81,8 +83,9 @@ class UserMethod:
     def view_mark(UserId):
         # 获取用户收藏信息
         result = User.getuserMarks(UserId)
-        print(result)
         now_marks = list()
+        if result is None:
+            return now_marks
         for work in result:
             uid = work.get("userId")
             print(uid)
