@@ -21,11 +21,10 @@ class WorksMethod:
 
         # 获取推送文
 
-    def make_comment(workid, text):
+    def make_comment(text):
         # 获取随机数
         score = get_score(text)
         # 将分数和id存入表中
-        result = WorkComment.insertWorkComment(workid, str(score))
         return score
         # 给对应作品评分，并存入数据库中
 
@@ -37,7 +36,6 @@ class WorksMethod:
     # 插入作品
     def publish_public_work(workName, workContent, userId, fileType, workType = ""):
         results = Work.insertWork(workName, workContent, userId, fileType, workType)
-        print(results)
         result = results[len(results)-1]
         return result['workId']
 
