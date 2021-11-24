@@ -181,7 +181,6 @@ def saveUserIcon():
 @app.route('/alwaysRight/getSomethingByUrl', methods=["POST"])  # need test
 def index():
     filePath = request.get_json().get("url")
-    print(filePath)
     try:
         return send_file(filePath)
     except:
@@ -232,7 +231,6 @@ def upload4text():
     userId = "2"
     fileType = "0"
     # 插入时必须得有用户Id
-    print(filePath)
     audio.save(filePath)
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)  # save id
     thisAudioId2Text = AudioWorkMethod.translate_work(filePath)  # save score
