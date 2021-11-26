@@ -11,7 +11,7 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
 
 
-@app.rooute('/connTest')
+@app.route('/connTest')
 def test():
     print("TesT")
     return jsonify(msg="Test Success")
@@ -78,6 +78,9 @@ def checkLogin():
     print("Let's check login")
     if not bool(session):
         message = 0
+    else:
+        phone = session['phone']
+        print(phone)
     return jsonify(msg=message)
 
 
@@ -100,11 +103,12 @@ def getRandomTextId():
 def getRandomText():
     getData = request.get_json()
     workid = getData.get("workid")
+    print(session)
     if not bool(session):
         return jsonify(msg="You haven't logined")
     phone = session['phone']
     UserMethod.view_work(phone, workid)
-    getWork = WorksMethod.get_random_text(workid)
+    getWork = WorksMethod.get_work_content(workid)
     print("Fetch Some WorkContent!!!")
     return jsonify(randomWork=getWork)
 
