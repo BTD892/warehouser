@@ -215,7 +215,7 @@ def upload4Score():
     print("Someone get Score")
     audio = request.files.get('audio')
     print(audio)
-    path = os.getcwd()+"//static//audio//"
+    path = os.getcwd()+"/static/audio/"
     audioName = audio.filename
     print(audioName)
     x = str(time.time()).split(".", 2)
@@ -252,7 +252,7 @@ def upload4Score():
 def upload4text():
     print("Someone get Text")
     audio = request.files.get('audio')
-    path = os.getcwd()+"//static//audio//"
+    path = os.getcwd()+"/static/audio/"
     audioName = audio.filename
     filePath = path + str(time.time()) + audioName
     userId = "2"
