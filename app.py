@@ -11,6 +11,12 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
 
 
+@app.rooute('/connTest')
+def test():
+    print("TesT")
+    return jsonify(msg="Test Success")
+
+
 @app.route('/alwaysRight/reg', methods=["POST"])  # need put in
 def register():
     getData = request.get_json()
@@ -214,14 +220,14 @@ def index():
 def upload4Score():
     print("Someone get Score")
     audio = request.files.get('audio')
-    print(audio)
+    # print(audio)
     path = os.getcwd()+"/static/audio/"
     audioName = audio.filename
-    print(audioName)
+    # print(audioName)
     x = str(time.time()).split(".", 2)
     t = x[0] + "-" + x[1]
     filePath = path + t + audioName
-    print(filePath)
+    # print(filePath)
     audio.save(filePath)
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
