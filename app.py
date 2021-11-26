@@ -215,11 +215,14 @@ def upload4Score():
     print("Someone get Score")
     audio = request.files.get('audio')
     print(audio)
-    path = os.getcwd()+"\\static\\audio\\"
+    path = os.getcwd()+"\\warehouser\\static\\audio\\"
     audioName = audio.filename
     print(audioName)
-    filePath = path + str(time.time()) + audioName
-    print(audio.save(filePath))
+    x = str(time.time()).split(".", 2)
+    t = x[0] + "-" + x[1]
+    filePath = path + t + audioName
+    print(filePath)
+    audio.save(filePath)
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
@@ -249,7 +252,7 @@ def upload4Score():
 def upload4text():
     print("Someone get Text")
     audio = request.files.get('audio')
-    path = os.getcwd()+"\\static\\audio\\"
+    path = os.getcwd()+"\\warehouser\\static\\audio\\"
     audioName = audio.filename
     filePath = path + str(time.time()) + audioName
     userId = "2"
