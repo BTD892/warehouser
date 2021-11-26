@@ -18,6 +18,8 @@ def get_score(text):
     f_result = json.loads(result)
     print(f_result)
     ff_result = f_result.get("ppl")
+    if ff_result is None:
+        ff_result = 0
     # 可以自定义想要的结果
     #     filter_str = re.compile('ppl": (.*)')
     #     value = re.findall(filter_str,str(response))
