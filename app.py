@@ -6,6 +6,7 @@ import os
 import time
 import wave
 import contextlib
+import ffmpeg
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
@@ -228,11 +229,16 @@ def upload4Score():
     path = os.getcwd()+"/static/audio/"
     audioName = audio.filename
     # print(audioName)
-    x = str(time.time()).split(".", 2)
-    t = x[0] + "-" + x[1]
-    filePath = path + t + audioName
+    x1 = str(time.time()).split(".", 2)
+    t1 = x1[0] + "-" + x1[1]
+    oldPath = path + t1 + audioName
     # print(filePath)
-    audio.save(filePath)
+    audio.save(oldPath)
+    x2 = str(time.time()).split(".", 2)
+    t2 = x2[0] + "-" + x2[1]
+    filePath = path + t2 + audioName
+    print(filePath)
+    ffmpeg.input(oldPath).output(filePath).run()
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
