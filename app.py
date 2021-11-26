@@ -214,10 +214,12 @@ def index():
 def upload4Score():
     print("Someone get Score")
     audio = request.files.get('audio')
+    print(audio)
     path = os.getcwd()+"\\static\\audio\\"
     audioName = audio.filename
+    print(audioName)
     filePath = path + str(time.time()) + audioName
-    audio.save(filePath)
+    print(audio.save(filePath))
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
