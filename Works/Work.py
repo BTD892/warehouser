@@ -129,7 +129,8 @@ class Work:
             conn.close()
             results = Work.getWorkInfo()
             return results
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     # 更改作品名称
