@@ -104,10 +104,7 @@ def getRandomTextId():
 def getRandomText():
     getData = request.get_json()
     workid = getData.get("workid")
-    print(session)
-    if not bool(session):
-        return jsonify(msg="You haven't logined")
-    phone = session['phone']
+    phone = getData.get("phone")
     UserMethod.view_work(phone, workid)
     getWork = WorksMethod.get_work_content(workid)
     print("Fetch Some WorkContent!!!")
@@ -237,7 +234,6 @@ def upload4Score():
     x2 = str(time.time()).split(".", 2)
     t2 = x2[0] + "-" + x2[1]
     filePath = path + t2 + audioName
-    print(filePath)
     ffmpeg.input(oldPath).output(filePath).run()
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
@@ -268,13 +264,19 @@ def upload4Score():
 def upload4text():
     print("Someone get Text")
     audio = request.files.get('audio')
-    path = os.getcwd()+"/static/audio/"
+    # print(audio)
+    path = os.getcwd() + "/static/audio/"
     audioName = audio.filename
-    filePath = path + str(time.time()) + audioName
-    userId = "2"
-    fileType = "0"
-    # 插入时必须得有用户Id
-    audio.save(filePath)
+    # print(audioName)
+    x1 = str(time.time()).split(".", 2)
+    t1 = x1[0] + "-" + x1[1]
+    oldPath = path + t1 + audioName
+    # print(filePath)
+    audio.save(oldPath)
+    x2 = str(time.time()).split(".", 2)
+    t2 = x2[0] + "-" + x2[1]
+    filePath = path + t2 + audioName
+    ffmpeg.input(oldPath).output(filePath).run()
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)  # save id
     thisAudioId2Text = AudioWorkMethod.translate_work(filePath)  # save score
     # WorkMethod.make_score(id)
