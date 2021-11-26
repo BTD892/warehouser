@@ -221,8 +221,7 @@ def upload4Score():
     # thisAudioId = func()  # save id
     # thisAudioId2Score = func()  # save score
     # thisAudioId = WorksMethod.publish_public_work(audioName, filePath, userId, fileType)
-    fname = '.\\static\\Audio\\mintest3.wav'
-    with contextlib.closing(wave.open(fname, 'r')) as f:
+    with contextlib.closing(wave.open(filePath, 'r')) as f:
         framse = f.getnframes()
         rate = f.getframerate()
         duration = framse / float(rate)
