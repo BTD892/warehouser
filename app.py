@@ -94,9 +94,11 @@ def getRandomTextId():
 def getRandomText():
     getData = request.get_json()
     workid = getData.get("workid")
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = session['phone']
     UserMethod.view_work(phone, workid)
-    getWork = WorksMethod.get_work_content(workid)
+    getWork = WorksMethod.get_random_text(workid)
     print("Fetch Some WorkContent!!!")
     return jsonify(randomWork=getWork)
 
@@ -115,6 +117,8 @@ def getAudioEvent():
     print("Knowing Someone has listened some audios!!!")
     getData = request.get_json()
     workid = getData.get("workid")
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = session['phone']
     UserMethod.view_work(phone, workid)
     return jsonify(msg="I have known that what you have listened")
@@ -127,6 +131,8 @@ def getAudioEvent():
 @app.route('/alwaysRight/addMarks', methods=["POST"])
 def addMarks():
     getData = request.get_json()
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = session['phone']
     workid = getData.get("workid")
     UserMethod.add_marks(phone, workid)
@@ -136,15 +142,28 @@ def addMarks():
 @app.route('/alwaysRight/deleteMark', methods=["POST"])
 def deleteMarks():
     getData = request.get_json()
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = session['phone']
     workid = getData.get("workid")
     UserMethod.add_marks(phone, workid)
     return jsonify(msg="Mark Successfully")
 
 
+@app.route('/alwaysRight/deleteMark', methods=["POST"])
+def deleteHistory():
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
+    phone = session['phone']
+    UserMethod.clear_history(phone)
+    return jsonify(msg="Clear Successfully")
+
+
 @app.route('/alwaysRight/getUserHistory', methods=["POST"])
 def getUserHistory():
     getData = request.get_json()
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = getData.get("phone")
     id = UserMethod.phone2userid(phone)
     userData = UserMethod.view_history(str(id))
@@ -155,6 +174,8 @@ def getUserHistory():
 @app.route('/alwaysRight/getUserLikeById', methods=["POST"])
 def getUserLikeById():
     getData = request.get_json()
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = getData.get("phone")
     id = UserMethod.phone2userid(phone)
     userData = UserMethod.view_mark(str(id))
@@ -169,6 +190,8 @@ def getUserLikeById():
 @app.route('/alwaysRight/saveUserIcon', methods=["POST"])  # need put in
 def saveUserIcon():
     Icon = request.files.get('Icon')
+    if not bool(session):
+        return jsonify(msg="You haven't logined")
     phone = session.get('phone')
     path = os.getcwd()+"\\static\\Icon\\"
     IconName = Icon.filename
