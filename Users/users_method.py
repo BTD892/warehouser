@@ -119,20 +119,28 @@ class UserMethod:
         return now_marks
         # 查看收藏
 
-    def delete_mark(userId, workId):
+    def delete_mark(phone, workId):
         # 删除用户收藏记录
+        userId = User.translateToUserId(phone)
         new_marks = User.deleteuserMarks(userId,workId)
         return new_marks
         # 删除收藏
 
     def delete_history(userId, workId):
         # 删除用户历史浏览记录
+        userId = User.translateToUserId(phone)
         new_history = User.deleteuserSearchRecord(userId, workId)
         return new_history
         # 删除历史
 
-    def add_mark(userId, workId):
+    def clear_history(phone):
+        userId = User.translateToUserId(phone)
+        new_history = User.clearuserSearchRecord(userId)
+        return new_history
+
+    def add_mark(phone, workId):
         # 添加用户收藏记录
+        userId = User.translateToUserId(phone)
         new_mark = User.insertuserMarks(userId,workId)
         return new_mark
         # 添加收藏
