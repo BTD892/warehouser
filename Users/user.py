@@ -608,6 +608,28 @@ class User:
         except:
             return False
 
+    def clearuserSearchRecord(userId):
+        conn = pymysql.connect(
+            host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
+            user="root",
+            port=25438,
+            password="Lcx010327",
+            database="Hokkien");
+
+        # 创建游标
+        str1 = "None"
+        cursor = conn.cursor();
+        sql = "UPDATE User SET userSearchRecord = \"" + str1 + "\" WHERE userId = \"" + userId + "\";"
+        try:
+            cursor.execute(sql)
+            conn.commit()
+            cursor.close()
+            conn.close()
+            results = User.getUserSearchRecord(userId)
+            return results
+        except:
+            return False
+
     # 查看用户喜好
     def getuserPrefer(userId):
         conn = pymysql.connect(
@@ -775,7 +797,7 @@ class User:
 
         # 创建游标
         cursor = conn.cursor();
-        sql = "SELECT username FROM User WHERE phoneNumber = \"" + userid + "\";"
+        sql = "SELECT userName FROM User WHERE userId = \"" + userid + "\";"
         try:
             cursor.execute(sql)
             results = cursor.fetchall()
