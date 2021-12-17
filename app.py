@@ -95,7 +95,8 @@ def getRandomTextId():
     while(cnt>0):
         work = WorksMethod.get_random_text()
         getWork.append(work)
-        cnt -= 1
+        if(work not in getWork):
+            cnt -= 1
     print("Fetch Some WorkId!!!")
     return jsonify(randomWork=getWork)
 
@@ -243,7 +244,8 @@ def upload4Score():
         rate = f.getframerate()
         duration = framse / float(rate)
     text = AudioWorkMethod.translate_work(filePath)
-    score = WorksMethod.make_comment(text)*0.5 + duration*10 + len(text)*10
+    lscore = WorksMethod.make_comment(text)
+    score = lscore*0.5 + duration*10 + len(text)*10
     if score <= 500:
         thisAudioId2Score = "SSS"
     elif 500 < score <= 1000:
@@ -254,6 +256,8 @@ def upload4Score():
         thisAudioId2Score = "A"
     else:
         thisAudioId2Score = "B"
+    if lscore == 0:
+        thisAudioId2Score = "无法识别"
     data = {
         'score': thisAudioId2Score
     }
