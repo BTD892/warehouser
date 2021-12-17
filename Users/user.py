@@ -806,5 +806,6 @@ class User:
             results = results[0]
             results = results[0]
             return results
-        except:
+        except Exception as e:
+            print(e)
             return False
