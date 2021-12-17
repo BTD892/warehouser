@@ -13,7 +13,7 @@ class WorksMethod:
         result = Work.deleteWork(workid)
         return result
 
-    def get_random_text(work_id):
+    def get_random_text():
         # 先获取一个作品id，再通过作品id获取作品信息
         tail = Work.getTextcnt()
         work_id = random.randint(0, tail-1)
@@ -29,6 +29,9 @@ class WorksMethod:
 
     def get_work_content(workid):
         work = Work.getSingleWorkInfo(str(workid))
+        userId = work[0].get("userId")
+        author = User.getUsername(str(userId))
+        work[0]["author"] = author
         return work
 
     def get_Audiowork(cnt):
@@ -49,6 +52,8 @@ class WorksMethod:
         # 获取随机数
         score = get_score(text)
         # 将分数和id存入表中
+        print(text)
+        print(score)
         return score
         # 给对应作品评分，并存入数据库中
 
