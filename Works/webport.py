@@ -96,7 +96,7 @@ def on_message(ws, message):
 
         if code != 0:
             errMsg = json.loads(message)["message"]
-            print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
+            # print("sid:%s call error:%s code is:%s" % (sid, errMsg, code))
 
         else:
             data = json.loads(message)["data"]["result"]["ws"]
@@ -104,8 +104,7 @@ def on_message(ws, message):
             for i in data:
                 for w in i["cw"]:
                     result += w["w"]
-                    print("on message test", w)
-            print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
+            # print("sid:%s call success!,data is:%s" % (sid, json.dumps(data, ensure_ascii=False)))
 
     except Exception as e:
         print("receive msg,but parse exception:", e)
@@ -173,8 +172,8 @@ def translate(audiofile, new_path):
     global wsParam
     global result
     result = ""
-    wsParam = Ws_Param(APPID='6f7c07ae', APISecret='Nzk1ZGI2NTg4YjUwZDk1NTk4OTcxOTRk',
-                       APIKey='8eb2f69ae406388a5e16f722c34c7276',
+    wsParam = Ws_Param(APPID='5e08719f', APISecret='OWY4MzkwOWE1YzllNTZhZmVkYmEyODFh',
+                       APIKey='e135ac7b44a0e0b748dca56871f04f23',
                        AudioFile=new_path)
     websocket.enableTrace(False)
     wsUrl = wsParam.create_url()
