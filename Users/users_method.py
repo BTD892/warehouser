@@ -141,6 +141,8 @@ class UserMethod:
     def add_mark(phone, workId):
         # 添加用户收藏记录
         userId = User.translateToUserId(phone)
+        print(userId)
         new_mark = User.insertuserMarks(userId,workId)
+        print(new_mark)
         return new_mark
         # 添加收藏
