@@ -232,7 +232,14 @@ def upload4Score():
         rate = f.getframerate()
         duration = framse / float(rate)
     text = AudioWorkMethod.translate_work(filePath)
-    score = WorksMethod.make_comment(text)*0.5 + duration*10 + len(text)*10
+    lscore = WorksMethod.make_comment(text)*0.5
+    score = duration*10 + len(text)*10
+    if lscore == 0:
+        thisAudioId2Score = "无法识别"
+        data = {
+            'score': thisAudioId2Score
+        }
+        return jsonify(data)
     if score <= 500:
         thisAudioId2Score = "SSS"
     elif 500 < score <= 1000:
