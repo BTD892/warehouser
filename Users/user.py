@@ -694,7 +694,6 @@ class User:
         userPrefer = User.getuserPrefer_1(userId)
         userPrefer.append(typeId)
         str1 = ",".join(userPrefer)
-        print(userPrefer)
         conn = pymysql.connect(
             host="gz-cynosdbmysql-grp-56sj4bjz.sql.tencentcdb.com",
             user="root",
@@ -806,6 +805,5 @@ class User:
             results = results[0]
             results = results[0]
             return results
-        except Exception as e:
-            print(e)
+        except:
             return False
