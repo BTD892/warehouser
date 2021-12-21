@@ -16,7 +16,6 @@ def get_score(text):
     response = urllib.request.urlopen(request).read()
     result = str(response, encoding="gbk")
     f_result = json.loads(result)
-    print(f_result)
     ff_result = f_result.get("ppl")
     if ff_result is None:
         ff_result = 0
