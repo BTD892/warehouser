@@ -13,7 +13,7 @@ class WorksMethod:
         result = Work.deleteWork(workid)
         return result
 
-    def get_random_text():
+    def get_random_text(work_id):
         # 先获取一个作品id，再通过作品id获取作品信息
         tail = Work.getTextcnt()
         work_id = random.randint(0, tail-1)
@@ -40,12 +40,12 @@ class WorksMethod:
         while cnt>0:
             work_id = random.randint(0, tail-1)
             work = Work.getSingleWorkInfo(str(20000+work_id))[0]
-            print(work)
             author_id = work["userId"]
             author_name = User.getUsername(str(author_id))
             work["author"] = author_name
-            result.append(work)
-            cnt -= 1
+            if work not in result:
+                result.append(work)
+                cnt -= 1
         return result
 
     def make_comment(text):
