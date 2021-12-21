@@ -13,7 +13,7 @@ class WorksMethod:
         result = Work.deleteWork(workid)
         return result
 
-    def get_random_text(work_id):
+    def get_random_text():
         # 先获取一个作品id，再通过作品id获取作品信息
         tail = Work.getTextcnt()
         work_id = random.randint(0, tail-1)
