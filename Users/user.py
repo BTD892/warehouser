@@ -441,6 +441,9 @@ class User:
     # 添加用户收藏记录
     def insertuserMarks(userId,workId):
         userMarks = User.getuserMarks_1(userId)
+        if workId in userMarks:
+            results = User.getuserMarks(userId)
+            return results
         userMarks.append(workId)
         str1 = ",".join(userMarks)
         conn = pymysql.connect(
@@ -559,6 +562,9 @@ class User:
     # 添加用户历史浏览记录
     def insertuserSearchRecord(userId,workId):
         userSearchRecord = User.getUserSearchRecord_1(userId)
+        if workId in userSearchRecord:
+            results = User.getuserMarks(userId)
+            return results
         userSearchRecord.append(workId)
         str1 = ",".join(userSearchRecord)
         conn = pymysql.connect(
@@ -711,7 +717,8 @@ class User:
             conn.close()
             results = User.getuserPrefer(userId)
             return results
-        except:
+        except Exception as e:
+            print(e)
             return False
 
     # 删除用户喜好
