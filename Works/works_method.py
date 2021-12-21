@@ -52,8 +52,6 @@ class WorksMethod:
         # 获取随机数
         score = get_score(text)
         # 将分数和id存入表中
-        print(text)
-        print(score)
         return score
         # 给对应作品评分，并存入数据库中
 
