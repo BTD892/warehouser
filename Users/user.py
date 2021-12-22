@@ -522,7 +522,7 @@ class User:
                 singleWork["workId"] = i
                 singleWork["workName"] = Work.getWorkName(i)
                 singleWork["workContent"] = Work.getWorkContent(i)
-                singleWork["workType"] = Work.getWorkTypeName(i)
+                singleWork["workType"] = Work.getfileTypeName(i)
                 singleWork["userId"] = Work.getWorkAuthor(i)
                 jsonData.append(singleWork)
             return jsonData
