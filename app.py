@@ -7,6 +7,7 @@ import time
 import wave
 import contextlib
 import ffmpeg
+import random
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = 'TPmi4aLWRbyVq8zu9v82dWYW1'
@@ -240,13 +241,13 @@ def upload4Score():
             'score': thisAudioId2Score
         }
         return jsonify(data)
-    if score <= 500:
+    if score <= 10:
         thisAudioId2Score = "SSS"
-    elif 500 < score <= 1000:
+    elif 10 < score <= 30:
         thisAudioId2Score = "SS"
-    elif 1000 < score <= 3000:
+    elif 30 < score <= 100:
         thisAudioId2Score = "S"
-    elif 3000 < score <= 10000:
+    elif 60 < score <= 200:
         thisAudioId2Score = "A"
     else:
         thisAudioId2Score = "B"
